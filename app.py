@@ -45,13 +45,13 @@ if uploaded_files:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         
         # --- 1. 最開始的經典綠色黴菌區間 (寬鬆捕捉所有綠色) ---
-        lower_green = np.array([33, 40, 40])
+        lower_green = np.array([31, 40, 40])
         upper_green = np.array([85, 255, 255])
         mask_green = cv2.inRange(hsv, lower_green, upper_green)
         
         # --- 2. 最開始的經典黑色黴菌區間 (全面解禁深黑與深灰色) ---
         lower_black = np.array([0, 0, 0])
-        upper_black = np.array([180, 255, 55])
+        upper_black = np.array([180, 255, 60])
         mask_black = cv2.inRange(hsv, lower_black, upper_black)
         
         # 合併候選黴菌遮罩
