@@ -51,7 +51,7 @@ if uploaded_files:
         
         # --- 2. 經典黑色黴菌區間 ---
         lower_black = np.array([0, 0, 0])
-        upper_black = np.array([180, 255, 50])
+        upper_black = np.array([180, 255, 30])
         mask_black = cv2.inRange(hsv, lower_black, upper_black)
         
         # 合併候選黴菌遮罩
