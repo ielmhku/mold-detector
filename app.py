@@ -6,8 +6,8 @@ import streamlit as st
 # 設定網頁標題與排版
 st.set_page_config(page_title="小學科學數字化探究 - 麵包黴菌檢測器", page_icon="🍞", layout="centered")
 
-st.title("🍞 小學科學數字化探究：麵包黴菌生長速率自動分析系統 (經典原版參數)")
-st.markdown("本版本採用**第一次的經典參數**：具備高敏感度、寬鬆色域，並帶有 `× 2.5` 放大係數，讓折線圖的成長曲線更加明顯直觀！")
+st.title("🍞 小學科學數字化探究：麵包黴菌生長速率自動分析系統 (×2 比例係數版)")
+st.markdown("本版本已調整：**1. 保留黃棕色早期黴菌、綠色與黑色黴菌的全方位精準識別；2. 將計算比例乘以 `× 2` 放大係數（上限 100%），讓小學課堂的折線圖變化更加明顯直觀！**")
 
 # 選擇實驗組別
 groups = [
@@ -33,29 +33,34 @@ if uploaded_files:
     # 依照檔案名稱排序（確保天數順序正確）
     uploaded_files = sorted(uploaded_files, key=lambda x: x.name)
     
-    st.subheader(f"🖼️ {selected_group} - 經典參數識別結果")
-    st.info("💡 **檢視說明：** 採用高敏感度經典參數，左側為原圖，右側為紅色標註圖。")
+    st.subheader(f"🖼️ {selected_group} - 識別結果與 ×2 放大比例標註")
+    st.info("💡 **檢視說明：** 左側為原圖，右側為紅色標註圖。覆蓋率計算已套用 `× 2` 放大係數，方便學生觀察生長趨勢。")
     
     for uploaded_file in uploaded_files:
         # 讀取圖片轉為 OpenCV 格式
         file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
         img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
         
-        # --- 第一次的經典參數核心 ---
+        # --- 轉換為 HSV 色彩空間 ---
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         
-        # 綠色黴菌區間 (寬鬆設定)
-        lower_green = np.array([40, 25, 30])
-        upper_green = np.array([85, 250, 250])
+        # --- 1. 黃棕色/淺褐色早期黴菌區間 ---
+        lower_yb = np.array([12, 35, 30])
+        upper_yb = np.array([32, 255, 230])
+        mask_yb = cv2.inRange(hsv, lower_yb, upper_yb)
+        
+        # --- 2. 綠色黴菌區間 ---
+        lower_green = np.array([33, 30, 30])
+        upper_green = np.array([85, 255, 255])
         mask_green = cv2.inRange(hsv, lower_green, upper_green)
         
-        # 黑色/深色黴菌區間 (寬鬆設定)
+        # --- 3. 黑色/深色黴菌區間 ---
         lower_black = np.array([0, 0, 0])
         upper_black = np.array([180, 255, 60])
         mask_black = cv2.inRange(hsv, lower_black, upper_black)
         
-        # 合併遮罩
-        mold_mask = cv2.bitwise_or(mask_green, mask_black)
+        # 合併所有黴菌遮罩 (黃棕色 + 綠色 + 黑色)
+        mold_mask = cv2.bitwise_or(mask_yb, cv2.bitwise_or(mask_green, mask_black))
         
         # --- 視覺化紅色高亮標註 ---
         visual_img = img.copy()
@@ -69,11 +74,11 @@ if uploaded_files:
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         blended_rgb = cv2.cvtColor(blended_img, cv2.COLOR_BGR2RGB)
         
-        # --- 計算面積百分比 (帶有經典的 × 2.5 放大係數) ---
+        # --- 計算面積百分比 (套用 × 2 放大係數，上限 100%) ---
         mold_pixels = np.count_nonzero(mold_mask)
         total_pixels = img.shape[0] * img.shape[1]
         
-        mold_percentage = round((mold_pixels / total_pixels) * 100 * 2, 1)
+        mold_percentage = round((mold_pixels / total_pixels) * 100 * 2.0, 1)
         if mold_percentage > 100.0:
             mold_percentage = 100.0
             
@@ -88,7 +93,7 @@ if uploaded_files:
             with col1:
                 st.image(img_rgb, caption=f"原圖：{uploaded_file.name}", use_container_width=True)
             with col2:
-                st.image(blended_rgb, caption=f"經典標註 (覆蓋率: {mold_percentage}%)", use_container_width=True)
+                st.image(blended_rgb, caption=f"標註圖 (覆蓋率: {mold_percentage}%)", use_container_width=True)
             st.markdown("---")
 
     # 轉換為數據表格
@@ -101,6 +106,6 @@ if uploaded_files:
     st.subheader("📈 黴菌生長速率折線圖")
     st.line_chart(df.set_index("實驗天數/檔案")["黴菌覆蓋率 (%)"])
     
-    st.success("✅ 已成功還原為第一次的經典參數版本！")
+    st.success("✅ 已成功套用 `× 2` 比例放大係數與全色域識別！")
 else:
     st.info("💡 請先在上方的檔案上傳區，選取並上傳該組別的實驗相片（支援多張同時選取）。")
