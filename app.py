@@ -86,7 +86,7 @@ if uploaded_files:
         visual_img[final_mask > 0] = [0, 0, 255]
         
         # 半透明疊加融合
-        alpha = 0.45
+        alpha = 0.5
         blended_img = cv2.addWeighted(visual_img, alpha, img, 1 - alpha, 0)
         
         # 轉回 RGB 格式以供 Streamlit 顯示
