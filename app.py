@@ -47,7 +47,7 @@ if uploaded_files:
         
         # 2. 優化後的顏色閥值（更精準捕捉綠色與深色黴菌，過濾陰影干擾）
         # 綠色黴菌區間
-        lower_green = np.array([27, 70, 40])
+        lower_green = np.array([30, 70, 40])
         upper_green = np.array([85, 255, 255])
         mask_green = cv2.inRange(hsv, lower_green, upper_green)
         
