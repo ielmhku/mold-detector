@@ -95,7 +95,7 @@ if uploaded_files:
         
         # --- 6. 計算面積百分比 (套用 × 2 放大係數，上限 100%) ---
         mold_pixels = np.count_nonzero(final_mask)
-        mold_percentage = round((mold_pixels / total_pixels) * 100 * 2.0, 1)
+        mold_percentage = round((mold_pixels / total_pixels) * 100 * 1.5, 1)
         if mold_percentage > 100.0:
             mold_percentage = 100.0
             
