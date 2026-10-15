@@ -50,7 +50,7 @@ if uploaded_files:
         mask_green = cv2.inRange(hsv, lower_green, upper_green)
         
         # 黑色/深色黴菌區間 (寬鬆設定)
-        lower_black = np.array([5, 0, 0])
+        lower_black = np.array([0, 0, 0])
         upper_black = np.array([180, 255, 60])
         mask_black = cv2.inRange(hsv, lower_black, upper_black)
         
