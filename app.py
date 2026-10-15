@@ -45,7 +45,7 @@ if uploaded_files:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         
         # --- 1. 微調後的綠色/黃綠色黴菌區間 ---
-        lower_green = np.array([33, 30, 24])
+        lower_green = np.array([33, 10, 24])
         upper_green = np.array([85, 255, 255])
         mask_green = cv2.inRange(hsv, lower_green, upper_green)
         
