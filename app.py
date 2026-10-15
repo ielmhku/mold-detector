@@ -49,7 +49,7 @@ if uploaded_files:
         
         # --- 3. 精準防誤判色域閥值 (核心修正) ---
         # (A) 黃綠色與綠色黴菌：Hue 從 25 開始（完全避開 10~24 的正常麵包金黃色外皮），飽和度提高至 50 濾除淡色雜訊
-        lower_yg = np.array([25, 50, 40])
+        lower_yg = np.array([25, 80, 40])
         upper_yg = np.array([85, 255, 210])
         mask_yg = cv2.inRange(hsv, lower_yg, upper_yg)
         
