@@ -7,7 +7,7 @@ import streamlit as st
 st.set_page_config(page_title="小學科學數字化探究 - 麵包黴菌檢測器", page_icon="🍞", layout="centered")
 
 st.title("🍞 小學科學數字化探究：麵包黴菌生長速率自動分析系統 (經典參數 + 白色保護罩版)")
-st.markdown("本版本完美融合：**1. 採用最開始寬鬆強大的綠色與黑色識別參數（全面解禁黑綠黴菌）；2. 保留白色麵包主體保護罩（精準防範 Day 1-2 誤判）；3. 套用 × 2 比例放大係數！**")
+st.markdown("本版本完美融合：**1. 採用最開始寬鬆強大的綠色與黑色識別參數（全面解禁黑綠黴菌）；2. 保留白色麵包主體保護罩（精準防範 Day 1-2 誤判）；3. 套用 × 1.5 比例放大係數！**")
 
 # 選擇實驗組別
 groups = [
@@ -95,7 +95,7 @@ if uploaded_files:
         
         # --- 6. 計算面積百分比 (套用 × 2 放大係數，上限 100%) ---
         mold_pixels = np.count_nonzero(final_mask)
-        mold_percentage = round((mold_pixels / total_pixels) * 100 * 2.0, 1)
+        mold_percentage = round((mold_pixels / total_pixels) * 100 * 1.5, 1)
         if mold_percentage > 100.0:
             mold_percentage = 100.0
             
