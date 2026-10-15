@@ -7,7 +7,7 @@ import streamlit as st
 st.set_page_config(page_title="小學科學數字化探究 - 麵包黴菌檢測器", page_icon="🍞", layout="centered")
 
 st.title("🍞 小學科學數字化探究：麵包黴菌生長速率自動分析系統 (升級版)")
-st.markdown("歡迎老師！本系統已升級：**1. 優化 OpenCV 顏色過濾邏輯，大幅提升準確度；2. 新增『AI 視覺化紅色標註圖』，讓您清楚看見電腦視覺識別的範圍。**")
+st.markdown("本系統已升級：**1. 優化 OpenCV 顏色過濾邏輯，大幅提升準確度；2. 新增『AI 視覺化紅色標註圖』，讓您清楚看見電腦視覺識別的範圍。**")
 
 # 選擇實驗組別
 groups = [
