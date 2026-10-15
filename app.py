@@ -45,7 +45,7 @@ if uploaded_files:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         
         # 綠色黴菌區間 (寬鬆設定)
-        lower_green = np.array([32, 25, 30])
+        lower_green = np.array([30, 25, 30])
         upper_green = np.array([85, 250, 250])
         mask_green = cv2.inRange(hsv, lower_green, upper_green)
         
@@ -73,7 +73,7 @@ if uploaded_files:
         mold_pixels = np.count_nonzero(mold_mask)
         total_pixels = img.shape[0] * img.shape[1]
         
-        mold_percentage = round((mold_pixels / total_pixels) * 100 * 2.5, 1)
+        mold_percentage = round((mold_pixels / total_pixels) * 100 * 2, 1)
         if mold_percentage > 100.0:
             mold_percentage = 100.0
             
