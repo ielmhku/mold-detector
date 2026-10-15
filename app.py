@@ -58,7 +58,7 @@ if uploaded_files:
         raw_mold = cv2.bitwise_or(mask_green, mask_black)
         
         # --- 3. 保留現在的「白色麵包主體保護罩」(強制扣除 Day 1 和 Day 2 的乾淨白麵包) ---
-        lower_white = np.array([0, 0, 115])
+        lower_white = np.array([0, 0, 105])
         upper_white = np.array([180, 45, 255])
         mask_white_bread = cv2.inRange(hsv, lower_white, upper_white)
         
